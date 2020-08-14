@@ -3,10 +3,16 @@
 @section('common_blade')
     <div class="container">
         <h1 class="display-4">Oficios</h1>
+
         @if(session('message'))
         <div class="alert alert-success">
           {{ session('message') }}
         </div>
+        @endif
+        @if (session('deleteMessage'))
+            <div class="alert alert-success">
+              {{ session('deleteMessage') }}
+            </div>
         @endif
         <form action="{{ route('add_oficio') }}" method="POST" class="p-2">
 
@@ -50,11 +56,19 @@
                 </td>
                 <td>{{ $item->description }}</td>
                 <td>
-                  <a href="{{ route('update_oficio', $item) }}" class="btn btn-dark">Update</a>
+                  <a href="{{ route('update_oficio', $item) }}" class="btn btn-warning">Update</a>
+
+                  <form action="{{ route('oficio_delete', $item) }}" method="POST"
+                  class="d-inline">
+                    @method('DELETE')
+                    @csrf
+                    <button class="btn btn-danger" type="submit">Delete</button>
+                  </form>
                 </td>
               </tr>
               @endforeach
             </tbody>
           </table>
+          {{ $oficios->links() }}
     </div>
 @endsection

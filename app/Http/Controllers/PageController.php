@@ -14,7 +14,7 @@ class PageController extends Controller
     }
     public function user_blade()
     {
-        $oficios = App\Oficio::all();
+        $oficios = App\Oficio::paginate(5);
         return view('users', compact('oficios'));
     }
     public function detail_user($id)
@@ -47,5 +47,11 @@ class PageController extends Controller
         $oficioUpdate->description = $request->description;
         $oficioUpdate->save();
         return back()->with('message_update', 'Oficio updated');
+    }
+    public function methodDeleteOficio($id)
+    {
+        $oficioDelete = App\Oficio::findOrFail($id);
+        $oficioDelete->delete();
+        return back()->with('deleteMessage', 'Oficio deleted');
     }
 }
