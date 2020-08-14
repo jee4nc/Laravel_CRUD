@@ -8,20 +8,35 @@
           {{ session('message') }}
         </div>
         @endif
-        <form action="{{ route('add_oficio') }}" method="POST">
+        <form action="{{ route('add_oficio') }}" method="POST" class="p-2">
+
           @csrf
-          <input type="text" name="name" placeholder="Name" class="form-control mb-2">
-          <input type="text" name="description" placeholder="Description" class="form-control mb-2">
+
+          @error('name')
+              <div class="alert alert-danger">
+                The name is required
+              </div> 
+          @enderror
+
+          @error('description')
+              <div class="alert alert-danger">
+                The description is required
+              </div> 
+          @enderror
+
+          <input type="text" name="name" placeholder="Name" class="form-control mb-2" value="{{ old('name') }}">
+          <input type="text" name="description" placeholder="Description" class="form-control mb-2" value="{{ old('description') }}">
           <button class="btn btn-primary btn-block" type="submit">Agregar</button>
+
         </form>
 
-        <table class="table ">
+        <table class="table">
             <thead class="thead-dark">
               <tr>
                 <th scope="col">#id</th>
                 <th scope="col">Name</th>
                 <th scope="col">Description</th>
-                <th scope="col">Handle</th>
+                <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -34,7 +49,9 @@
                     </a>
                 </td>
                 <td>{{ $item->description }}</td>
-                <td>@mdo</td>
+                <td>
+                  <a href="{{ route('update_oficio', $item) }}" class="btn btn-dark">Update</a>
+                </td>
               </tr>
               @endforeach
             </tbody>

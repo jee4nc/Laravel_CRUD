@@ -25,10 +25,27 @@ class PageController extends Controller
     public function add_oficio(Request $request)
     {
         // return $request->all();
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required'
+        ]);
         $new_oficio = new App\Oficio;
         $new_oficio->name = $request->name;
         $new_oficio->description = $request->description;
         $new_oficio->save();
         return back()->with('message', 'Oficcio added');
+    }
+    public function update_oficio($id)
+    {
+        $oficio = App\Oficio::FindOrFail($id);
+        return view('oficio.update', compact('oficio'));
+    }
+    public function task_update_oficio(Request $request, $id)
+    {
+        $oficioUpdate = App\Oficio::findOrFail($id);
+        $oficioUpdate->name = $request->name;
+        $oficioUpdate->description = $request->description;
+        $oficioUpdate->save();
+        return back()->with('message_update', 'Oficio updated');
     }
 }
